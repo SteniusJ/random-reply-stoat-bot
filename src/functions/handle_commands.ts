@@ -21,26 +21,38 @@ export default class CommandHandler {
         this.commands = new Map();
 
         this.commands.set("game", async (message) => {
-            const result = await query_db("gameMessages[*] | random 1");
+            try {
+                const result = await query_db("gameMessages[*] | random 1");
 
-            if (result == null) {
-                message.reply("database error");
+                if (result == null) {
+                    message.reply("database error");
+                }
+                message.reply(result.data[0].game_message);
+            } catch(err) {
+                console.error(err);
             }
-            message.reply(result.data[0].game_message);;
         });
 
         this.commands.set("gregflip", async (message) => {
-            if (Math.random() > 0.5) {
-                message.reply("Gregs");
-            } else {
-                message.reply("Tails");
+            try {
+                if (Math.random() > 0.5) {
+                    message.reply("Gregs");
+                } else {
+                    message.reply("Tails");
+                }
+            } catch(err) {
+                console.error(err);
             }
         });
 
         this.commands.set("ping", async (message) => {
-            const responses = ["ALIVE", "I'm good", "sometimes", "pong", "don't disturb me"];
-            let random_index = Math.floor(Math.random() * responses.length);
-            message.reply(responses[random_index]);
+            try {
+                const responses = ["ALIVE", "I'm good", "sometimes", "pong", "don't disturb me"];
+                let random_index = Math.floor(Math.random() * responses.length);
+                message.reply(responses[random_index]);
+            } catch(err) {
+                console.error(err);
+            }
         });
     }
 }

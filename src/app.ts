@@ -14,23 +14,27 @@ client.on("ready", async () => {
 });
 
 client.on("messageCreate",  async (message) => {
-    if (command_handler.handle_commands(message)) {
-        return;
-    }
+    try {
+        if (command_handler.handle_commands(message)) {
+            return;
+        }
 
-    if (message.mentioned) {
-        const reply = await random_reply();
-        message.reply(reply);
-        return;
-    }
+        if (message.mentioned) {
+            const reply = await random_reply();
+            message.reply(reply);
+            return;
+        }
 
-    if (Math.floor(Math.random() * reply_chance) == 1 && !message.author.bot) {
-        const reply = await random_reply();
-        message.reply(reply);
-    }
-    if (Math.floor(Math.random() * react_chance) == 1 && !message.author.bot) {
-        const reaction = await random_react();
-        message.react(reaction);
+        if (Math.floor(Math.random() * reply_chance) == 1 && !message.author.bot) {
+            const reply = await random_reply();
+            message.reply(reply);
+        }
+        if (Math.floor(Math.random() * react_chance) == 1 && !message.author.bot) {
+            const reaction = await random_react();
+            message.react(reaction);
+        }
+    } catch(err) {
+        console.error(err);
     }
 });
 
