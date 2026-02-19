@@ -36,5 +36,11 @@ export default class CommandHandler {
                 message.reply("Tails");
             }
         });
+
+        this.commands.set("ping", async (message) => {
+            const responses = ["ALIVE", "I'm good", "sometimes", "pong", "don't disturb me"];
+            let random_index = Math.floor(Math.random() * responses.length);
+            message.reply(responses[random_index]);
+        });
     }
 }
