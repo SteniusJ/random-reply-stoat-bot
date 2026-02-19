@@ -1,0 +1,29 @@
+{
+  "name": "random-reply-stoat-bot",
+  "version": "1.0.0",
+  "description": "Port of my \"random-reply-discord-bot\" for Stoat.chat",
+  "homepage": "https://github.com/SteniusJ/random-reply-stoat-bot#readme",
+  "bugs": {
+    "url": "https://github.com/SteniusJ/random-reply-stoat-bot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SteniusJ/random-reply-stoat-bot.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "src/app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "stoat.js": "^7.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3"
+  }
+}
