@@ -3,7 +3,7 @@ import query_db from "./query_database.ts";
 export default class CommandHandler {
     commands: Map<string, { (message: any):Promise<void>; }>;
 
-    handle_commands(message):boolean {
+    call(message):boolean {
         if (message.content.charAt(0) == "/") {
             let command_name = message.content.substring(1, message.content.length);
 
@@ -21,38 +21,34 @@ export default class CommandHandler {
         this.commands = new Map();
 
         this.commands.set("game", async (message) => {
-            try {
-                const result = await query_db("gameMessages[*] | random 1");
+            const result = await query_db("gameMessages[*] | random 1");
 
-                if (result == null) {
-                    message.reply("database error");
-                }
-                message.reply(result.data[0].game_message);
-            } catch(err) {
-                console.error(err);
+            if (result == null) {
+                message.reply("database error");
             }
+            message.reply(result.data[0].game_message).catch((reason) => {
+                console.error(reason);
+            });
         });
 
         this.commands.set("gregflip", async (message) => {
-            try {
-                if (Math.random() > 0.5) {
-                    message.reply("Gregs");
-                } else {
-                    message.reply("Tails");
-                }
-            } catch(err) {
-                console.error(err);
+            if (Math.random() > 0.5) {
+                message.reply("Gregs").catch((reason) => {
+                    console.error(reason);
+                });
+            } else {
+                message.reply("Tails").catch((reason) => {
+                    console.error(reason);
+                });
             }
         });
 
         this.commands.set("ping", async (message) => {
-            try {
-                const responses = ["ALIVE", "I'm good", "sometimes", "pong", "don't disturb me"];
-                let random_index = Math.floor(Math.random() * responses.length);
-                message.reply(responses[random_index]);
-            } catch(err) {
-                console.error(err);
-            }
+            const responses = ["ALIVE", "I'm good", "sometimes", "pong", "don't disturb me"];
+            let random_index = Math.floor(Math.random() * responses.length);
+            message.reply(responses[random_index]).catch((reason) => {
+                console.error(reason);
+            });
         });
     }
 }

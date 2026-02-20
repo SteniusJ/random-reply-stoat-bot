@@ -12,13 +12,14 @@ export async function random_reply(): Promise<string> {
     }
 }
 
-export async function random_react(): Promise<string> {
+export async function random_react(): Promise<[string, number]> {
     try {
         const result = await query_db("reactEmojis[*] | random 1");
         if (result == null) {
-            return "database failiure";
+            console.error("database failiure");
+            return [null, null];
         }
-        return result.data[0].react_emoji;
+        return [result.data[0].react_emoji, result.data[0].index];
     } catch(err) {
         console.error(err);
     }

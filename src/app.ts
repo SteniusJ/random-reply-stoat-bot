@@ -14,27 +14,37 @@ client.on("ready", async () => {
 });
 
 client.on("messageCreate",  async (message) => {
-    try {
-        if (command_handler.handle_commands(message)) {
+    if (command_handler.call(message)) {
+        return;
+    }
+
+    if (message.mentioned) {
+        const reply = await random_reply();
+        message.reply(reply).catch((reason) => {
+            console.error(reason);
+        });
+        return;
+    }
+
+    if (Math.floor(Math.random() * reply_chance) == 1 && !message.author.bot) {
+        const reply = await random_reply();
+        message.reply(reply).catch((reason) => {
+            console.error(reason);
+        });
+    }
+    if (Math.floor(Math.random() * react_chance) == 1 && !message.author.bot) {
+        const [reaction, index] = await random_react();
+        
+        if (reaction == null) {
             return;
         }
 
-        if (message.mentioned) {
-            const reply = await random_reply();
-            message.reply(reply);
-            return;
-        }
-
-        if (Math.floor(Math.random() * reply_chance) == 1 && !message.author.bot) {
-            const reply = await random_reply();
-            message.reply(reply);
-        }
-        if (Math.floor(Math.random() * react_chance) == 1 && !message.author.bot) {
-            const reaction = await random_react();
-            message.react(reaction);
-        }
-    } catch(err) {
-        console.error(err);
+        message.react(reaction).catch((reason) => {
+            message.reply(`react emoji at index: {${index}} is not in correct syntax for stoat`).catch((reason) => {
+                console.error(reason);
+            });
+            console.error(reason);
+        });
     }
 });
 
