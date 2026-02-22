@@ -4,7 +4,7 @@ export default class CommandHandler {
     commands: Map<string, { (message: any):Promise<void>; }>;
 
     call(message):boolean {
-        if (message.content.charAt(0) == "/") {
+        if (message.content.charAt(0) == "/" && message.content.length > 2) {
             let command_name = message.content.substring(1, message.content.length);
 
             let command = this.commands.get(command_name);
@@ -24,7 +24,10 @@ export default class CommandHandler {
             const result = await query_db("gameMessages[*] | random 1");
 
             if (result == null) {
-                message.reply("database error");
+                message.reply("database error").catch((reason) => {
+                    console.error(reason);
+                });
+                return;
             }
             message.reply(result.data[0].game_message).catch((reason) => {
                 console.error(reason);
