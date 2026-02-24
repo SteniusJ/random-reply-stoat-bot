@@ -13,6 +13,14 @@ client.on("ready", async () => {
     console.info(`Logged in as ${client.user.username}`);
 });
 
+client.on("error", async (error) => {
+    console.error(error);
+})
+
+client.on("disconnected", async () => {
+    console.log("Client disconnected");
+})
+
 client.on("messageCreate",  async (message) => {
     if (command_handler.call(message)) {
         return;
